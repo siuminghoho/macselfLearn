@@ -3,6 +3,20 @@
 
 
 
+.block {
+    display: block;
+}
+
+.block .col-sm-6 {
+    background: yellow;
+}
+.
+
+
+.container-fluid.row.col-sm-3{
+    width:25%;
+    /* padding:30px */
+}
 
 .body {
     background-color: rgb(241, 207, 96);
@@ -63,7 +77,6 @@
 
 
 
-@keyframes slidein{ */
 
 
 
