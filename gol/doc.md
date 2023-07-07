@@ -1,5 +1,5 @@
-[]-Landing Page for your Game of Life project. It should be a different html file from the Game of life page.
-[]-A simple page to introduce yourself
+[X]-Landing Page for your Game of Life project. It should be a different html file from the Game of life page.
+[x]-A simple page to introduce yourself
 Here are some of the topics that you should attempt to work on:
 
 []-Control speed of the Game of Life. (Checkout framerate(), you can use slider to control the framerate )

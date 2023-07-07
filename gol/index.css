@@ -1,0 +1,18 @@
+.container {
+    background-color: yellow;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.landing-page {
+    background-color: red;
+    text-align: center;
+}
+
+.grid-system {
+    background-color: green;
+    display: flex;
+    justify-content: space-between;
+}

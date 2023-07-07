@@ -1,7 +1,9 @@
-/* #canvasContainer>canvas{
-
-
-
-
-
-} */
+.canvas{
+    border: 1px solid black;
+    margin:20px;
+    width: 500px;
+    height: 500px;
+    background-color: #fff;
+    justify-content: center;
+    aspect-ratio: 0,0,0;
+}
