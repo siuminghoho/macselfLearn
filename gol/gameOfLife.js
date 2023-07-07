@@ -5,7 +5,7 @@ let columns; /* To be determined by window width */
 let rows; /* To be determined by window height */
 let currentBoard;
 let nextBoard;
-let fr = 12;
+let fr = 10;
 
 
 
@@ -151,18 +151,25 @@ function mouseReleased() {
 }
 
 
-function frameRateAdd(){
-  console.log('hihi')
-  fr += 5
+// function frameRateAdd(){
+//   console.log('hihi')
+//   fr += 1
+//   frameRate(fr);
+// }
+
+function frameRateAdd() {
+  fr = parseInt(document.getElementById('framerateSlider').value + 1);
   frameRate(fr);
 }
-
-function frameRateMinus(){
-  console.log('hehe')
-  fr -= 5
+// function frameRateMinus(){
+//   console.log('hehe')
+//   fr -= 1
+//   frameRate(fr);
+// }
+function frameRateMinus() {
+  fr = parseInt(document.getElementById('framerateSlider').value - 1);
   frameRate(fr);
 }
-
 
 // []-Control speed of the Game of Life. (Checkout framerate(), you can use slider to control the framerate )
 

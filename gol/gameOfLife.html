@@ -20,15 +20,25 @@
 </head>
 
 <body>
-    <div>Game Of Life</div>
-    <div id="canvasContainer">
-        <div id="canvas">
+    <div class="background">
+        <div class="header">
+            <h1>Game Of Life</h1>
         </div>
+        <!-- slider -->
+        <label for="framerateSlider" class="form-label">Adjust Speed:</label>
+        <input type="range" class="form-range" id="framerateSlider" min="0" max="60" step="1">
 
 
+        <div id="canvasContainer">
+            <div id="canvas">
+            </div>
+        </div>
     </div>
-    <div class="framerate-add" onclick="frameRateAdd()"> ADD</div>
-    <div class="framerate-minus" onclick="frameRateMinus()"> MINUS</div>
+
+
+
+    <!-- <div class="framerate-add" onclick="frameRateAdd()"> ADD</div>
+    <div class="framerate-minus" onclick="frameRateMinus()"> MINUS</div> -->
 
     <script src="gameOfLife.js"></script>
 </body>

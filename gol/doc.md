@@ -2,7 +2,7 @@
 [x]-A simple page to introduce yourself
 Here are some of the topics that you should attempt to work on:
 
-[]-Control speed of the Game of Life. (Checkout framerate(), you can use slider to control the framerate )
+[]-Control speed of the Game of Life. ([x]Checkout framerate(), you can use [ ]slider to control the framerate )
 []-Allow users to change the rules of survival.
 []-Allow users to change the rules of reproduction.
 []-Start/Stop the Game of life
