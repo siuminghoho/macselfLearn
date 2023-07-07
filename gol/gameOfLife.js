@@ -157,23 +157,28 @@ function mouseReleased() {
 //   frameRate(fr);
 // }
 
-function frameRateAdd() {
-  fr = parseInt(document.getElementById('framerateSlider').value + 1);
-  frameRate(fr);
-}
-// function frameRateMinus(){
-//   console.log('hehe')
-//   fr -= 1
+// function frameRateAdd() {
+//   fr = parseInt(document.getElementById('framerateSlider').value + 1);
 //   frameRate(fr);
 // }
-function frameRateMinus() {
-  fr = parseInt(document.getElementById('framerateSlider').value - 1);
-  frameRate(fr);
-}
+// // function frameRateMinus(){
+// //   console.log('hehe')
+// //   fr -= 1
+// //   frameRate(fr);
+// // }
+// function frameRateMinus() {
+//   fr = parseInt(document.getElementById('framerateSlider').value - 1);
+//   frameRate(fr);
+// }
 
 // []-Control speed of the Game of Life. (Checkout framerate(), you can use slider to control the framerate )
 
 
 
+function handleSpeedChange() {
+  const sliderValue = parseInt(document.getElementById('framerateSlider').value);
+  fr = sliderValue;
+  frameRate(fr);
+}
 
 

@@ -26,7 +26,7 @@
         </div>
         <!-- slider -->
         <label for="framerateSlider" class="form-label">Adjust Speed:</label>
-        <input type="range" class="form-range" id="framerateSlider" min="0" max="60" step="1">
+        <input type="range" class="form-range" id="framerateSlider" min="0" max="60" step="1" oninput="handleSpeedChange()">
 
 
         <div id="canvasContainer">
@@ -35,7 +35,8 @@
         </div>
     </div>
 
-
+<!-- <input type="range" class="form-range" id="framerateSlider" min="0" max="100" step="1" oninput="handleSpeedChange()">
+ -->
 
     <!-- <div class="framerate-add" onclick="frameRateAdd()"> ADD</div>
     <div class="framerate-minus" onclick="frameRateMinus()"> MINUS</div> -->
