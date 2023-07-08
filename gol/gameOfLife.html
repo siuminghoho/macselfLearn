@@ -10,10 +10,7 @@
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
         crossorigin="anonymous"></script>
 
-
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.js"></script>
-
 
     <link rel="stylesheet" href="gameOfLife.css" />
     <title>Document</title>
@@ -25,21 +22,14 @@
             <h1>Game Of Life</h1>
         </div>
         <!-- slider -->
+        <div class="controls"></div>
         <label for="framerateSlider" class="form-label">Adjust Speed:</label>
-        <input type="range" class="form-range" id="framerateSlider" min="0" max="60" step="1" oninput="handleSpeedChange()">
+        <input type="range" class="form-range" id="framerateSlider" min="0" max="60" step="1"
+            oninput="handleSpeedChange()">
 
-
-        <div id="canvasContainer">
-            <div id="canvas">
-            </div>
-        </div>
+        <div class="canvasContainer" id="canvas"></div>
+        
     </div>
-
-<!-- <input type="range" class="form-range" id="framerateSlider" min="0" max="100" step="1" oninput="handleSpeedChange()">
- -->
-
-    <!-- <div class="framerate-add" onclick="frameRateAdd()"> ADD</div>
-    <div class="framerate-minus" onclick="frameRateMinus()"> MINUS</div> -->
 
     <script src="gameOfLife.js"></script>
 </body>

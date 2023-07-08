@@ -7,17 +7,11 @@ let currentBoard;
 let nextBoard;
 let fr = 10;
 
-
-
-
-
-//p5js function
-//setup() function is for setting up the initial values. It is going to run exactly once.
 function setup() {
+
   /* Set the canvas to be under the element #canvas*/
-  const canvas = createCanvas(/*windowWidth*/800, /*windowHeight*/600);
+  const canvas = createCanvas(windowWidth, windowHeight - 100);
   canvas.parent(document.querySelector("#canvas"));
-  frameRate(fr)//p5js default function
 
   /*Calculate the number of columns and rows */
   columns = floor(width / unitLength);
@@ -33,6 +27,22 @@ function setup() {
   // Now both currentBoard and nextBoard are array of array of undefined values.
   init(); // Set the initial values of the currentBoard and nextBoard
 }
+// const canvasContainer = document.getElementsByClassName(canvas1);
+// const canvasWidth = canvas1.offsetWidth;
+// const canvasHeight = canvas1.offsetHeight;
+// const minSize = Math.min(canvasWidth, canvasHeight);
+// const canvas = createCanvas(minSize, minSize);
+// canvas.parent('canvasContainer');
+// canvas.style('border', '10px solid black');
+// frameRate(fr);
+
+// columns = floor(width / unitLength);
+// rows = floor(height / unitLength);
+
+//   currentBoard = createEmptyBoard();
+//   nextBoard = createEmptyBoard();
+//   initBoard();
+// }
 
 /**
  * Initialize/reset the board state
@@ -40,8 +50,9 @@ function setup() {
 function init() {
   for (let i = 0; i < columns; i++) {
     for (let j = 0; j < rows; j++) {
+      // let someVariables = <condictions> : <when_true> : <when_false>;
       currentBoard[i][j] = random() > 0.8 ? 1 : 0; // one line if
-      nextBoard[i][j] = 0
+      nextBoard[i][j] = 0;
       // currentBoard[i][j] = 0;
       // nextBoard[i][j] = 0;
     }
@@ -49,9 +60,24 @@ function init() {
 }
 
 
+// function createEmptyBoard() {
+//   const board = [];
+//   for (let i = 0; i < columns; i++) {
+//     board[i] = [];
+//     for (let j = 0; j < rows; j++) {
+//       board[i][j] = 0;
+//     }
+//   }
+//   return board;
+// }
 
-//p5js function
-// draw() is going to run many times. It is going to run once per frame. If you have a frame rate of 30 frames per second, then draw() runs 30 times per second!
+// function initBoard() {
+//   for (let i = 0; i < columns; i++) {
+//     for (let j = 0; j < rows; j++) {
+//       currentBoard[i][j] = random() > 0.8 ? 1 : 0;
+//     }
+//   }
+// }
 
 function draw() {
   background(255);
@@ -69,7 +95,13 @@ function draw() {
   }
 }
 
-//p5js function
+
+// function draw() {
+//   background(255);
+//   generate();
+//   drawBoard();
+// }
+
 function generate() {
   //Loop over every single box on the board
   for (let x = 0; x < columns; x++) {
@@ -109,13 +141,19 @@ function generate() {
   [currentBoard, nextBoard] = [nextBoard, currentBoard];
 }
 
-
-
-
-
-
-
-
+// function drawBoard() {
+//   for (let i = 0; i < columns; i++) {
+//     for (let j = 0; j < rows; j++) {
+//       if (currentBoard[i][j] == 1) {
+//         fill(boxColor);
+//       } else {
+//         fill(255);
+//       }
+//       stroke(strokeColor);
+//       rect(i * unitLength, j * unitLength, unitLength, unitLength);
+//     }
+//   }
+// }
 
 /**
  * When mouse is dragged
@@ -150,35 +188,16 @@ function mouseReleased() {
   loop();
 }
 
-
-// function frameRateAdd(){
-//   console.log('hihi')
-//   fr += 1
-//   frameRate(fr);
-// }
-
-// function frameRateAdd() {
-//   fr = parseInt(document.getElementById('framerateSlider').value + 1);
-//   frameRate(fr);
-// }
-// // function frameRateMinus(){
-// //   console.log('hehe')
-// //   fr -= 1
-// //   frameRate(fr);
-// // }
-// function frameRateMinus() {
-//   fr = parseInt(document.getElementById('framerateSlider').value - 1);
-//   frameRate(fr);
-// }
-
-// []-Control speed of the Game of Life. (Checkout framerate(), you can use slider to control the framerate )
-
-
-
 function handleSpeedChange() {
   const sliderValue = parseInt(document.getElementById('framerateSlider').value);
   fr = sliderValue;
   frameRate(fr);
 }
 
+// Call setup() after defining all functions
+// setup();
 
+
+document.querySelector("#reset-game").addEventListener("click", function () {
+  init();
+});
