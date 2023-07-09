@@ -5,6 +5,8 @@ let columns; /* To be determined by window width */
 let rows; /* To be determined by window height */
 let currentBoard;
 let nextBoard;
+
+//extra variables
 let fr = 10;
 let MIN_ALIVE_NEIGHBORS = 2;
 let MAX_ALIVE_NEIGHBORS = 3;
@@ -33,6 +35,7 @@ function setup() {
   init(); // Set the initial values of the currentBoard and nextBoard
 }
 
+//setup();
 
 // <-------------try to set width and height based on the 
 // const canvasContainer = document.getElementsByClassName(canvas1);
@@ -58,7 +61,9 @@ function setup() {
 
 
 function init(event, minAlive, maxAlive, reproduction) {
-  event.preventDefault();
+  if(event){
+    event.preventDefault();
+  }
 
   // Check if values are provided, and if not, use default values.
   minAliveNeighbors = minAlive ? parseInt(minAlive) : MIN_ALIVE_NEIGHBORS;
@@ -66,9 +71,9 @@ function init(event, minAlive, maxAlive, reproduction) {
   reproductionNeighbors = reproduction ? parseInt(reproduction) : REPRODUCTION_NEIGHBORS;
 
   // Initialize the board with random values.
-  for (let i = 0; i < cols; i++) {
+  for (let i = 0; i < columns; i++) {
     for (let j = 0; j < rows; j++) {
-      currentBoard[i][j] = random() > 0.5 ? 1 : 0; // one line if
+      currentBoard[i][j] = random() > 0.8 ? 1 : 0; // one line if
       nextBoard[i][j] = 0;
       // board[i][j] = floor(random(2));
       // next[i][j] = 0;
