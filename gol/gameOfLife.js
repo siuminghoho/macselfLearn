@@ -6,11 +6,16 @@ let rows; /* To be determined by window height */
 let currentBoard;
 let nextBoard;
 let fr = 10;
+let MIN_ALIVE_NEIGHBORS = 2;
+let MAX_ALIVE_NEIGHBORS = 3;
+let REPRODUCTION_NEIGHBORS = 3;
+
+
 
 function setup() {
 
   /* Set the canvas to be under the element #canvas*/
-  const canvas = createCanvas(windowWidth, windowHeight - 100);
+  const canvas = createCanvas(800, 600);
   canvas.parent(document.querySelector("#canvas"));
 
   /*Calculate the number of columns and rows */
@@ -27,6 +32,9 @@ function setup() {
   // Now both currentBoard and nextBoard are array of array of undefined values.
   init(); // Set the initial values of the currentBoard and nextBoard
 }
+
+
+// <-------------try to set width and height based on the 
 // const canvasContainer = document.getElementsByClassName(canvas1);
 // const canvasWidth = canvas1.offsetWidth;
 // const canvasHeight = canvas1.offsetHeight;
@@ -47,54 +55,84 @@ function setup() {
 /**
  * Initialize/reset the board state
  */
-function init() {
-  for (let i = 0; i < columns; i++) {
+
+
+function init(event, minAlive, maxAlive, reproduction) {
+  event.preventDefault();
+
+  // Check if values are provided, and if not, use default values.
+  minAliveNeighbors = minAlive ? parseInt(minAlive) : MIN_ALIVE_NEIGHBORS;
+  maxAliveNeighbors = maxAlive ? parseInt(maxAlive) : MAX_ALIVE_NEIGHBORS;
+  reproductionNeighbors = reproduction ? parseInt(reproduction) : REPRODUCTION_NEIGHBORS;
+
+  // Initialize the board with random values.
+  for (let i = 0; i < cols; i++) {
     for (let j = 0; j < rows; j++) {
-      // let someVariables = <condictions> : <when_true> : <when_false>;
-      currentBoard[i][j] = random() > 0.8 ? 1 : 0; // one line if
+      currentBoard[i][j] = random() > 0.5 ? 1 : 0; // one line if
       nextBoard[i][j] = 0;
-      // currentBoard[i][j] = 0;
-      // nextBoard[i][j] = 0;
+      // board[i][j] = floor(random(2));
+      // next[i][j] = 0;
     }
   }
+  MIN_ALIVE_NEIGHBORS = parseInt(minAliveNeighbors);
+  MAX_ALIVE_NEIGHBORS = parseInt(maxAliveNeighbors);
+  REPRODUCTION_NEIGHBORS = parseInt(reproductionNeighbors);
 }
 
 
-// function createEmptyBoard() {
-//   const board = [];
-//   for (let i = 0; i < columns; i++) {
-//     board[i] = [];
-//     for (let j = 0; j < rows; j++) {
-//       board[i][j] = 0;
-//     }
-//   }
-//   return board;
-// }
-
-// function initBoard() {
-//   for (let i = 0; i < columns; i++) {
-//     for (let j = 0; j < rows; j++) {
-//       currentBoard[i][j] = random() > 0.8 ? 1 : 0;
-//     }
-//   }
-// }
 
 function draw() {
   background(255);
   generate();
   for (let i = 0; i < columns; i++) {
     for (let j = 0; j < rows; j++) {
-      if (currentBoard[i][j] == 1) {
-        fill(boxColor);
-      } else {
-        fill(255);
+
+
+      let neighbors = 0;
+      for (let x of [-1, 0, 1]) {
+        for (let y of [-1, 0, 1]) {
+          if (x == 0 && y == 0) {
+            continue;
+          }
+          neighbors +=
+            currentBoard[(i + x + columns) % columns][(j + y + rows) % rows];
+        }
       }
+      if (currentBoard[i][j] == 1) {
+        if (neighbors == 3) {
+          fill(255, 105, 180); // Color for cells that came to life due to having exactly 3 neighbors
+        } else {
+          fill(boxColor); // Alive color (replace 'boxColor' with the variable or value you're using)
+        }
+      } else {
+        fill(255); // Dead color
+      }
+
       stroke(strokeColor);
       rect(i * unitLength, j * unitLength, unitLength, unitLength);
     }
   }
 }
 
+function applyRules(currentBoard, x, y, minAliveNeighbors, maxAliveNeighbors, reproductionNeighbors) {
+  let neighbors = 0;
+  for (let i of [-1, 0, 1]) {
+    for (let j of [-1, 0, 1]) {
+      if (i == 0 && j == 0) {
+        continue;
+      }
+      neighbors += currentBoard[(x + i + columns) % columns][(y + j + rows) % rows];
+    }
+  }
+
+  if (currentBoard[x][y] == 1 && (neighbors < minAliveNeighbors || neighbors > maxAliveNeighbors)) {
+    return 0;
+  } else if (currentBoard[x][y] == 0 && neighbors == reproductionNeighbors) {
+    return 1;
+  } else {
+    return currentBoard[x][y];
+  }
+}
 
 // function draw() {
 //   background(255);
@@ -104,56 +142,58 @@ function draw() {
 
 function generate() {
   //Loop over every single box on the board
+  const minAliveNeighbors = parseInt(document.getElementById("minAliveNeighbors").value);
+  const maxAliveNeighbors = parseInt(document.getElementById("maxAliveNeighbors").value);
+  const reproductionNeighbors = parseInt(document.getElementById("reproductionNeighbors").value);
+  // for (let x = 0; x < columns; x++) {
+  //   for (let y = 0; y < rows; y++) {
+  //     // Count all living members in the Moore neighborhood(8 boxes surrounding)
+  //     let neighbors = 0;
+  //     for (let i of [-1, 0, 1]) {
+  //       for (let j of [-1, 0, 1]) {
+  //         if (i == 0 && j == 0) {
+  //           // the cell itself is not its own neighbor
+  //           continue;
+  //         }
+  //         // The modulo operator is crucial for wrapping on the edge
+  //         neighbors +=
+  //           currentBoard[(x + i + columns) % columns][(y + j + rows) % rows];
+  //       }
+  //     }
+  //-Allow users to change the rules of survival.
+  // Rules of Life
+
+  //   if (currentBoard[x][y] == 1 && neighbors < 2) {
+  //     // Die of Loneliness
+  //     nextBoard[x][y] = 0;
+  //   } else if (currentBoard[x][y] == 1 && neighbors > 3) {
+  //     // Die of Overpopulation
+  //     nextBoard[x][y] = 0;
+  //   } else if (currentBoard[x][y] == 0 && neighbors == 3) {
+  //     //nextBoard[x][y].fill(024)
+  //     // New life due to Reproduction
+  //     nextBoard[x][y] = 1;
+  //   } else {
+  //     // Stasis
+  //     nextBoard[x][y] = currentBoard[x][y];
+  //   }
+  // }
+  // }
   for (let x = 0; x < columns; x++) {
     for (let y = 0; y < rows; y++) {
-      // Count all living members in the Moore neighborhood(8 boxes surrounding)
-      let neighbors = 0;
-      for (let i of [-1, 0, 1]) {
-        for (let j of [-1, 0, 1]) {
-          if (i == 0 && j == 0) {
-            // the cell itself is not its own neighbor
-            continue;
-          }
-          // The modulo operator is crucial for wrapping on the edge
-          neighbors +=
-            currentBoard[(x + i + columns) % columns][(y + j + rows) % rows];
-        }
-      }
-
-      // Rules of Life
-      if (currentBoard[x][y] == 1 && neighbors < 2) {
-        // Die of Loneliness
-        nextBoard[x][y] = 0;
-      } else if (currentBoard[x][y] == 1 && neighbors > 3) {
-        // Die of Overpopulation
-        nextBoard[x][y] = 0;
-      } else if (currentBoard[x][y] == 0 && neighbors == 3) {
-        // New life due to Reproduction
-        nextBoard[x][y] = 1;
-      } else {
-        // Stasis
-        nextBoard[x][y] = currentBoard[x][y];
-      }
+      nextBoard[x][y] = applyRules(currentBoard, x, y, minAliveNeighbors, maxAliveNeighbors, reproductionNeighbors);
     }
   }
 
-  // Swap the nextBoard to be the current Board
   [currentBoard, nextBoard] = [nextBoard, currentBoard];
 }
 
-// function drawBoard() {
-//   for (let i = 0; i < columns; i++) {
-//     for (let j = 0; j < rows; j++) {
-//       if (currentBoard[i][j] == 1) {
-//         fill(boxColor);
-//       } else {
-//         fill(255);
-//       }
-//       stroke(strokeColor);
-//       rect(i * unitLength, j * unitLength, unitLength, unitLength);
-//     }
-//   }
-// }
+// Swap the nextBoard to be the current Board
+// [currentBoard, nextBoard] = [nextBoard, currentBoard];
+
+
+
+
 
 /**
  * When mouse is dragged
@@ -194,10 +234,3 @@ function handleSpeedChange() {
   frameRate(fr);
 }
 
-// Call setup() after defining all functions
-// setup();
-
-
-document.querySelector("#reset-game").addEventListener("click", function () {
-  init();
-});
