@@ -43,11 +43,14 @@
         <button type="button" class="init"
             onclick="init(event, minAliveNeighbors.value, maxAliveNeighbors.value, reproductionNeighbors.value)">Start</button>
         <button type="button" class="stop" id="stopButton">Stop</button>
+        <button type="button" class="resume" id="resumeButton">Resume</button>
 
 
-    
-
-
+        <div class="Spaceships">
+            <button type="button" class="glider" id="glider">Spawn Glider</button>
+            <button type="button" class="lwss" id="lwss">Spawn LWSS</button>
+            <button type="button" class="gosperGliderGun" id="gosperGliderGun">Spawn Gosper Glider Gun</button>
+        </div>
 
         <!-- test -->
 
@@ -55,10 +58,12 @@
         <p>Window height: <span id="height"></span></p>
         <p>Window width: <span id="width"></span></p>
 
-        <!-- test -->
-        document.getElementById("myBtn").addEventListener("click", function() {
-        alert("Hello World!");
-        
+
+
+
+
+
+
 
 
         <script src="gameOfLife.js"></script>

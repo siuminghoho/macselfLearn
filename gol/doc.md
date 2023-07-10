@@ -9,7 +9,7 @@ Here are some of the topics that you should attempt to work on:
 [X]-Multiple colors of life on the same board.
 [X]-Darken colors for stable life.
 [X]-Random initial states
-[]-Well-known patterns of Game of Life to select from (Examples: Gosper Glider Gun, Glider, Lightweight train).
+[x]-Well-known patterns of Game of Life to select from (Examples: Gosper Glider Gun, Glider, Lightweight train).
 []-Use Keyboard to control the cursor to place the life
 []-Resize board on windows resize (Check out windowsResized())
 []-Switching between different styles.

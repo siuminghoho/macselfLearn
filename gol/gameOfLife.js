@@ -12,26 +12,15 @@ let MIN_ALIVE_NEIGHBORS = 2;
 let MAX_ALIVE_NEIGHBORS = 2;
 let REPRODUCTION_NEIGHBORS = 3;
 
+let selectedPattern;
+
 
 
 function setup() {
 
-  let stopButton = select('#stopButton');
-  stopButton.mousePressed(toggleLoop);
 
-  let isLooping = true;
-
-  function toggleLoop() {
-    if (isLooping) {
-      noLoop();
-      isLooping = false;
-    } else {
-      loop();
-      isLooping = true;
-    }
-  }
   /* Set the canvas to be under the element #canvas*/
-  const canvas = createCanvas(800, 600);
+  const canvas = createCanvas(1200, 600);
   canvas.parent(document.querySelector("#canvas"));
 
   /*Calculate the number of columns and rows */
@@ -80,13 +69,15 @@ function init(event, minAlive, maxAlive, reproduction) {
   }
 
   // Check if values are provided, and if not, use default values.
-  minAliveNeighbors = minAlive ? parseInt(minAlive) : MIN_ALIVE_NEIGHBORS;
-  maxAliveNeighbors = maxAlive ? parseInt(maxAlive) : MAX_ALIVE_NEIGHBORS;
-  reproductionNeighbors = reproduction ? parseInt(reproduction) : REPRODUCTION_NEIGHBORS;
+  //minAliveNeighbors = minAlive ? parseInt(minAlive) : MIN_ALIVE_NEIGHBORS;
+  //maxAliveNeighbors = maxAlive ? parseInt(maxAlive) : MAX_ALIVE_NEIGHBORS;
+  //reproductionNeighbors = reproduction ? parseInt(reproduction) : REPRODUCTION_NEIGHBORS;
 
   // Initialize the board with random values.
   for (let i = 0; i < columns; i++) {
     for (let j = 0; j < rows; j++) {
+      currentBoard[i][j] = 0;
+      nextBoard[i][j] = 0;
       currentBoard[i][j] = random() > 0.5 ? 1 : 0; // one line if
       nextBoard[i][j] = 0;
       // board[i][j] = floor(random(2));
@@ -217,38 +208,43 @@ function generate() {
 
 
 
-/**
- * When mouse is dragged
- */
+
+//When mouse is dragged
+
+
+
+//If the mouse coordinate is outside the board
 function mouseDragged() {
-  /**
-   * If the mouse coordinate is outside the board
-   */
   if (mouseX > unitLength * columns || mouseY > unitLength * rows) {
     return;
   }
   const x = Math.floor(mouseX / unitLength);
   const y = Math.floor(mouseY / unitLength);
-  currentBoard[x][y] = 1;
-  fill(boxColor);
-  stroke(strokeColor);
-  rect(x * unitLength, y * unitLength, unitLength, unitLength);
+
+  if (selectedPattern) {
+    placePattern(selectedPattern, x, y);
+  } else {
+    currentBoard[x][y] = 1;
+    fill('gold');
+    stroke(strokeColor);
+    rect(x * unitLength, y * unitLength, unitLength, unitLength);
+  }
 }
 
+//When mouse is pressed
 
- When mouse is pressed
- 
 function mousePressed() {
   noLoop();
   mouseDragged();
+
 }
 
-/**
- * When mouse is released
- */
+
+//When mouse is released
+
 function mouseReleased() {
   loop();
-
+}
 
 function handleSpeedChange() {
   const sliderValue = parseInt(document.getElementById('framerateSlider').value);
@@ -256,6 +252,19 @@ function handleSpeedChange() {
   frameRate(fr);
 }
 
+// stop button 
+
+const stopButton = document.querySelector("#stopButton");
+
+stopButton.addEventListener("click", () => {
+  noLoop();
+});
+
+const resumeButton = document.querySelector("#stopButton");
+
+resumeButton.addEventListener("click", () => {
+  Loop();
+});
 
 
 
@@ -267,6 +276,62 @@ function reportWindowSize() {
   heightOutput.textContent = window.innerHeight;
   widthOutput.textContent = window.innerWidth;
 }
+
+function placePattern(pattern, offsetX, offsetY) {
+  for (let i = 0; i < pattern.length; i++) {
+    for (let j = 0; j < pattern[i].length; j++) {
+      if (i + offsetX < columns && j + offsetY < rows) {
+        currentBoard[i + offsetX][j + offsetY] = pattern[i][j];
+      }
+    }
+  }
+}
+
+
+
+const GLIDER = [
+  [0, 1, 0],
+  [0, 0, 1],
+  [1, 1, 1]
+];
+
+const LWSS =[
+  [0, 1, 1, 1, 1],
+  [1, 0, 0, 0, 1],
+  [0, 0, 0, 0, 1],
+  [1, 0, 0, 1, 0]
+];
+
+const GOSPER_GLIDER_GUN = [
+  [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+];
+
+
+
+
+
+document.getElementById('glider').addEventListener('click', (event) => {
+  event.preventDefault();
+  selectedPattern = GLIDER;
+});
+
+document.getElementById('lwss').addEventListener('click', (event) => {
+  event.preventDefault();
+  selectedPattern = LWSS;
+});
+
+document.getElementById('gosperGliderGun').addEventListener('click', (event) => {
+  event.preventDefault();
+  selectedPattern = GOSPER_GLIDER_GUN;
+});
+
+
+
 
 window.onresize = reportWindowSize;
 
