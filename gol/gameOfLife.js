@@ -1,5 +1,5 @@
 const unitLength = 20;
-const boxColor = 150;
+let boxColor;
 const strokeColor = 50;
 let columns; /* To be determined by window width */
 let rows; /* To be determined by window height */
@@ -9,13 +9,27 @@ let nextBoard;
 //extra variables
 let fr = 10;
 let MIN_ALIVE_NEIGHBORS = 2;
-let MAX_ALIVE_NEIGHBORS = 3;
+let MAX_ALIVE_NEIGHBORS = 2;
 let REPRODUCTION_NEIGHBORS = 3;
 
 
 
 function setup() {
 
+  let stopButton = select('#stopButton');
+  stopButton.mousePressed(toggleLoop);
+
+  let isLooping = true;
+
+  function toggleLoop() {
+    if (isLooping) {
+      noLoop();
+      isLooping = false;
+    } else {
+      loop();
+      isLooping = true;
+    }
+  }
   /* Set the canvas to be under the element #canvas*/
   const canvas = createCanvas(800, 600);
   canvas.parent(document.querySelector("#canvas"));
@@ -61,7 +75,7 @@ function setup() {
 
 
 function init(event, minAlive, maxAlive, reproduction) {
-  if(event){
+  if (event) {
     event.preventDefault();
   }
 
@@ -73,7 +87,7 @@ function init(event, minAlive, maxAlive, reproduction) {
   // Initialize the board with random values.
   for (let i = 0; i < columns; i++) {
     for (let j = 0; j < rows; j++) {
-      currentBoard[i][j] = random() > 0.8 ? 1 : 0; // one line if
+      currentBoard[i][j] = random() > 0.5 ? 1 : 0; // one line if
       nextBoard[i][j] = 0;
       // board[i][j] = floor(random(2));
       // next[i][j] = 0;
@@ -105,8 +119,11 @@ function draw() {
       }
       if (currentBoard[i][j] == 1) {
         if (neighbors == 3) {
-          fill(255, 105, 180); // Color for cells that came to life due to having exactly 3 neighbors
+          fill('grey'); // Color for cells that came to life due to having exactly 3 neighbors
+        } else if (neighbors == 2) {
+          fill('grey'); // Color for cells that are alive and have exactly 2 neighbors (they stay alive)
         } else {
+          let boxColor = `rgb(${Math.floor(Math.random() * 255)},${Math.floor(Math.random() * 255)},${Math.floor(Math.random() * 255)})`;
           fill(boxColor); // Alive color (replace 'boxColor' with the variable or value you're using)
         }
       } else {
@@ -218,9 +235,9 @@ function mouseDragged() {
   rect(x * unitLength, y * unitLength, unitLength, unitLength);
 }
 
-/**
- * When mouse is pressed
- */
+
+ When mouse is pressed
+ 
 function mousePressed() {
   noLoop();
   mouseDragged();
@@ -231,7 +248,7 @@ function mousePressed() {
  */
 function mouseReleased() {
   loop();
-}
+
 
 function handleSpeedChange() {
   const sliderValue = parseInt(document.getElementById('framerateSlider').value);
@@ -252,3 +269,10 @@ function reportWindowSize() {
 }
 
 window.onresize = reportWindowSize;
+
+
+
+
+
+     // Stasis
+  //     nextBoard[x][y] = currentBoard[x][y];

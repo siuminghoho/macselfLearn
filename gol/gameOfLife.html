@@ -42,13 +42,10 @@
 
         <button type="button" class="init"
             onclick="init(event, minAliveNeighbors.value, maxAliveNeighbors.value, reproductionNeighbors.value)">Start</button>
-        <button class="button">A</button>
-        <button class="button">A</button>
-        <button class="button">A</button>
-        <button class="button">A</button>
-        <button class="button">A</button>
-        <button class="button">A</button>
+        <button type="button" class="stop" id="stopButton">Stop</button>
 
+
+    
 
 
 
@@ -59,8 +56,11 @@
         <p>Window width: <span id="width"></span></p>
 
         <!-- test -->
-
+        document.getElementById("myBtn").addEventListener("click", function() {
+        alert("Hello World!");
         
+
+
         <script src="gameOfLife.js"></script>
 
 
