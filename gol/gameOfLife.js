@@ -125,7 +125,14 @@ function draw() {
       rect(i * unitLength, j * unitLength, unitLength, unitLength);
     }
   }
-}
+
+    // Draw the cursor
+    stroke('red');
+    strokeWeight(2);
+    noFill();
+    rect(cursorX * unitLength, cursorY * unitLength, unitLength, unitLength);
+  }
+
 
 function applyRules(currentBoard, x, y, minAliveNeighbors, maxAliveNeighbors, reproductionNeighbors) {
   let neighbors = 0;
@@ -147,11 +154,7 @@ function applyRules(currentBoard, x, y, minAliveNeighbors, maxAliveNeighbors, re
   }
 }
 
-// function draw() {
-//   background(255);
-//   generate();
-//   drawBoard();
-// }
+
 
 function generate() {
   //Loop over every single box on the board
@@ -272,21 +275,6 @@ resumeButton.addEventListener("click", () => {
 const heightOutput = document.querySelector("#height");
 const widthOutput = document.querySelector("#width");
 
-function reportWindowSize() {
-  heightOutput.textContent = window.innerHeight;
-  widthOutput.textContent = window.innerWidth;
-}
-
-function placePattern(pattern, offsetX, offsetY) {
-  for (let i = 0; i < pattern.length; i++) {
-    for (let j = 0; j < pattern[i].length; j++) {
-      if (i + offsetX < columns && j + offsetY < rows) {
-        currentBoard[i + offsetX][j + offsetY] = pattern[i][j];
-      }
-    }
-  }
-}
-
 
 
 const GLIDER = [
@@ -332,6 +320,48 @@ document.getElementById('gosperGliderGun').addEventListener('click', (event) => 
 
 
 
+// Initialize cursor position
+let cursorX = Math.floor(columns / 2);
+let cursorY = Math.floor(rows / 2);
+
+// Event listener for keyboard input
+document.addEventListener('keydown', (event) => {
+  
+  const key = event.key;
+  console.log('keydown event:', event.key)
+  // Update cursor position based on arrow keys
+  if (key === 'ArrowUp') {
+    cursorY = Math.max(cursorY - 1, 0);
+    event.preventDefault(); // Prevent scrolling
+  } else if (key === 'ArrowDown') {
+    cursorY = Math.min(cursorY + 1, rows - 1);
+    event.preventDefault(); // Prevent scrolling
+  } else if (key === 'ArrowLeft') {
+    cursorX = Math.max(cursorX - 1, 0);
+    event.preventDefault(); // Prevent scrolling
+  } else if (key === 'ArrowRight') {
+    cursorX = Math.min(cursorX + 1, columns - 1);
+    event.preventDefault(); // Prevent scrolling
+  } else if (key === 'Enter') {
+    // Place the selected pattern at the cursor position
+    placePattern(selectedPattern, cursorX, cursorY);
+  }
+});
+
+function reportWindowSize() {
+  heightOutput.textContent = window.innerHeight;
+  widthOutput.textContent = window.innerWidth;
+}
+
+function placePattern(pattern, offsetX, offsetY) {
+  for (let i = 0; i < pattern.length; i++) {
+    for (let j = 0; j < pattern[i].length; j++) {
+      if (i + offsetX < columns && j + offsetY < rows) {
+        currentBoard[i + offsetX][j + offsetY] = pattern[i][j];
+      }
+    }
+  }
+}
 
 window.onresize = reportWindowSize;
 
