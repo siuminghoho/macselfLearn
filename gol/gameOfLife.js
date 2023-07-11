@@ -7,20 +7,26 @@ let currentBoard;
 let nextBoard;
 
 //extra variables
-let fr = 10;
-let MIN_ALIVE_NEIGHBORS = 2;
-let MAX_ALIVE_NEIGHBORS = 2;
-let REPRODUCTION_NEIGHBORS = 3;
-
+let fr = 5;
+// let MIN_ALIVE_NEIGHBORS = 2;
+// let MAX_ALIVE_NEIGHBORS = 3;
+// let REPRODUCTION_NEIGHBORS = 3;
+let isGameRunning = false;
 let selectedPattern;
+let cursorX = 0;
+let cursorY = 0;
 
+const heightOutput = document.querySelector("#height");
+const widthOutput = document.querySelector("#width");
 
 
 function setup() {
 
 
+  frameRate(fr);
+
   /* Set the canvas to be under the element #canvas*/
-  const canvas = createCanvas(1200, 600);
+  const canvas = createCanvas(1200, windowHeight - 400);
   canvas.parent(document.querySelector("#canvas"));
 
   /*Calculate the number of columns and rows */
@@ -38,29 +44,6 @@ function setup() {
   init(); // Set the initial values of the currentBoard and nextBoard
 }
 
-//setup();
-
-// <-------------try to set width and height based on the 
-// const canvasContainer = document.getElementsByClassName(canvas1);
-// const canvasWidth = canvas1.offsetWidth;
-// const canvasHeight = canvas1.offsetHeight;
-// const minSize = Math.min(canvasWidth, canvasHeight);
-// const canvas = createCanvas(minSize, minSize);
-// canvas.parent('canvasContainer');
-// canvas.style('border', '10px solid black');
-// frameRate(fr);
-
-// columns = floor(width / unitLength);
-// rows = floor(height / unitLength);
-
-//   currentBoard = createEmptyBoard();
-//   nextBoard = createEmptyBoard();
-//   initBoard();
-// }
-
-/**
- * Initialize/reset the board state
- */
 
 
 function init(event, minAlive, maxAlive, reproduction) {
@@ -68,25 +51,25 @@ function init(event, minAlive, maxAlive, reproduction) {
     event.preventDefault();
   }
 
-  // Check if values are provided, and if not, use default values.
-  //minAliveNeighbors = minAlive ? parseInt(minAlive) : MIN_ALIVE_NEIGHBORS;
-  //maxAliveNeighbors = maxAlive ? parseInt(maxAlive) : MAX_ALIVE_NEIGHBORS;
-  //reproductionNeighbors = reproduction ? parseInt(reproduction) : REPRODUCTION_NEIGHBORS;
+  //Check if values are provided, and if not, use default values.
+  // minAliveNeighbors = minAlive ? parseInt(minAlive) : MIN_ALIVE_NEIGHBORS;
+  // maxAliveNeighbors = maxAlive ? parseInt(maxAlive) : MAX_ALIVE_NEIGHBORS;
+  // reproductionNeighbors = reproduction ? parseInt(reproduction) : REPRODUCTION_NEIGHBORS;
 
   // Initialize the board with random values.
   for (let i = 0; i < columns; i++) {
     for (let j = 0; j < rows; j++) {
       currentBoard[i][j] = 0;
       nextBoard[i][j] = 0;
-      currentBoard[i][j] = random() > 0.5 ? 1 : 0; // one line if
+      currentBoard[i][j] = random() > 0.8 ? 1 : 0; // one line if
       nextBoard[i][j] = 0;
       // board[i][j] = floor(random(2));
       // next[i][j] = 0;
     }
   }
-  MIN_ALIVE_NEIGHBORS = parseInt(minAliveNeighbors);
-  MAX_ALIVE_NEIGHBORS = parseInt(maxAliveNeighbors);
-  REPRODUCTION_NEIGHBORS = parseInt(reproductionNeighbors);
+  // MIN_ALIVE_NEIGHBORS = parseInt(minAliveNeighbors);
+  // MAX_ALIVE_NEIGHBORS = parseInt(maxAliveNeighbors);
+  // REPRODUCTION_NEIGHBORS = parseInt(reproductionNeighbors);
 }
 
 
@@ -110,9 +93,9 @@ function draw() {
       }
       if (currentBoard[i][j] == 1) {
         if (neighbors == 3) {
-          fill('grey'); // Color for cells that came to life due to having exactly 3 neighbors
+          fill(100); // Color for cells that came to life due to having exactly 3 neighbors
         } else if (neighbors == 2) {
-          fill('grey'); // Color for cells that are alive and have exactly 2 neighbors (they stay alive)
+          fill(150); // Color for cells that are alive and have exactly 2 neighbors (they stay alive)
         } else {
           let boxColor = `rgb(${Math.floor(Math.random() * 255)},${Math.floor(Math.random() * 255)},${Math.floor(Math.random() * 255)})`;
           fill(boxColor); // Alive color (replace 'boxColor' with the variable or value you're using)
@@ -123,15 +106,18 @@ function draw() {
 
       stroke(strokeColor);
       rect(i * unitLength, j * unitLength, unitLength, unitLength);
+
+
+
     }
   }
 
-    // Draw the cursor
-    stroke('red');
-    strokeWeight(2);
-    noFill();
-    rect(cursorX * unitLength, cursorY * unitLength, unitLength, unitLength);
-  }
+  // Draw the cursor
+  stroke('yellow');
+  strokeWeight(3);
+  noFill();
+  rect(cursorX * unitLength, cursorY * unitLength, unitLength, unitLength);
+}
 
 
 function applyRules(currentBoard, x, y, minAliveNeighbors, maxAliveNeighbors, reproductionNeighbors) {
@@ -161,62 +147,23 @@ function generate() {
   const minAliveNeighbors = parseInt(document.getElementById("minAliveNeighbors").value);
   const maxAliveNeighbors = parseInt(document.getElementById("maxAliveNeighbors").value);
   const reproductionNeighbors = parseInt(document.getElementById("reproductionNeighbors").value);
-  // for (let x = 0; x < columns; x++) {
-  //   for (let y = 0; y < rows; y++) {
-  //     // Count all living members in the Moore neighborhood(8 boxes surrounding)
-  //     let neighbors = 0;
-  //     for (let i of [-1, 0, 1]) {
-  //       for (let j of [-1, 0, 1]) {
-  //         if (i == 0 && j == 0) {
-  //           // the cell itself is not its own neighbor
-  //           continue;
-  //         }
-  //         // The modulo operator is crucial for wrapping on the edge
-  //         neighbors +=
-  //           currentBoard[(x + i + columns) % columns][(y + j + rows) % rows];
-  //       }
-  //     }
-  //-Allow users to change the rules of survival.
-  // Rules of Life
 
-  //   if (currentBoard[x][y] == 1 && neighbors < 2) {
-  //     // Die of Loneliness
-  //     nextBoard[x][y] = 0;
-  //   } else if (currentBoard[x][y] == 1 && neighbors > 3) {
-  //     // Die of Overpopulation
-  //     nextBoard[x][y] = 0;
-  //   } else if (currentBoard[x][y] == 0 && neighbors == 3) {
-  //     //nextBoard[x][y].fill(024)
-  //     // New life due to Reproduction
-  //     nextBoard[x][y] = 1;
-  //   } else {
-  //     // Stasis
-  //     nextBoard[x][y] = currentBoard[x][y];
-  //   }
-  // }
-  // }
   for (let x = 0; x < columns; x++) {
     for (let y = 0; y < rows; y++) {
       nextBoard[x][y] = applyRules(currentBoard, x, y, minAliveNeighbors, maxAliveNeighbors, reproductionNeighbors);
     }
   }
+  // Swap the nextBoard to be the current Board
+  // [currentBoard, nextBoard] = [nextBoard, currentBoard];
 
   [currentBoard, nextBoard] = [nextBoard, currentBoard];
 }
-
-// Swap the nextBoard to be the current Board
-// [currentBoard, nextBoard] = [nextBoard, currentBoard];
-
-
 
 
 
 
 //When mouse is dragged
 
-
-
-//If the mouse coordinate is outside the board
 function mouseDragged() {
   if (mouseX > unitLength * columns || mouseY > unitLength * rows) {
     return;
@@ -237,20 +184,22 @@ function mouseDragged() {
 //When mouse is pressed
 
 function mousePressed() {
+  console.log("mouse pressed");
   noLoop();
   mouseDragged();
-
 }
 
 
 //When mouse is released
 
 function mouseReleased() {
+  console.log("mouse released");
   loop();
 }
 
 function handleSpeedChange() {
   const sliderValue = parseInt(document.getElementById('framerateSlider').value);
+  console.log("check slider value", sliderValue)
   fr = sliderValue;
   frameRate(fr);
 }
@@ -260,20 +209,21 @@ function handleSpeedChange() {
 const stopButton = document.querySelector("#stopButton");
 
 stopButton.addEventListener("click", () => {
+  console.log("stop button clicked");
   noLoop();
+  //change game running status
+  isGameRunning = false;
+
 });
 
-const resumeButton = document.querySelector("#stopButton");
+const resumeButton = document.querySelector("#resumeButton");
 
 resumeButton.addEventListener("click", () => {
-  Loop();
+  loop();
+  //change game running status
+  isGameRunning = true;
 });
 
-
-
-// testing
-const heightOutput = document.querySelector("#height");
-const widthOutput = document.querySelector("#width");
 
 
 
@@ -283,7 +233,7 @@ const GLIDER = [
   [1, 1, 1]
 ];
 
-const LWSS =[
+const LWSS = [
   [0, 1, 1, 1, 1],
   [1, 0, 0, 0, 1],
   [0, 0, 0, 0, 1],
@@ -321,32 +271,52 @@ document.getElementById('gosperGliderGun').addEventListener('click', (event) => 
 
 
 // Initialize cursor position
-let cursorX = Math.floor(columns / 2);
-let cursorY = Math.floor(rows / 2);
+// let cursorX = Math.floor(columns / 2);
+// let cursorY = Math.floor(rows / 2);
 
-// Event listener for keyboard input
-document.addEventListener('keydown', (event) => {
-  
-  const key = event.key;
-  console.log('keydown event:', event.key)
-  // Update cursor position based on arrow keys
-  if (key === 'ArrowUp') {
-    cursorY = Math.max(cursorY - 1, 0);
-    event.preventDefault(); // Prevent scrolling
-  } else if (key === 'ArrowDown') {
-    cursorY = Math.min(cursorY + 1, rows - 1);
-    event.preventDefault(); // Prevent scrolling
-  } else if (key === 'ArrowLeft') {
-    cursorX = Math.max(cursorX - 1, 0);
-    event.preventDefault(); // Prevent scrolling
-  } else if (key === 'ArrowRight') {
-    cursorX = Math.min(cursorX + 1, columns - 1);
-    event.preventDefault(); // Prevent scrolling
-  } else if (key === 'Enter') {
-    // Place the selected pattern at the cursor position
-    placePattern(selectedPattern, cursorX, cursorY);
+// Event listener for keyboard input use p5 keyPressed
+
+function keyPressed() {
+
+  if (keyCode == 38) {
+
+    cursorY = (cursorY - 1 + rows) % rows;
+    currentBoard[x][y] = 1
+    value = 'yellow'
+    console.log(38)
+  } else if (keyCode == 40) {
+
+    cursorY = (cursorY + 1 + rows) % rows;
+    currentBoard[x][y] = 1
+    value = 'yellow'
+    console.log(40)
+  } else if (keyCode === 37) {
+
+    cursorX = (cursorX - 1 + columns) % columns;
+    currentBoard[x][y] = 1
+    value = 'yellow'
+    console.log(37)
+  } else if (keyCode === 39) {
+
+    cursorX = (cursorX + 1 + columns) % columns;
+    currentBoard[x][y] = 1
+    value = 'yellow'
+    console.log(39)
+  } else if (key === ' ') { // Enter space
+    // isGameRunning = !isGameRunning;
+
+    if (isGameRunning) {
+      console.log('going')
+      loop();
+    } else {
+      console.log('stopping')
+      noLoop();
+    }
+    // if (!isGameRunning) {
+    //   redraw();
+    // }
   }
-});
+}
 
 function reportWindowSize() {
   heightOutput.textContent = window.innerHeight;
@@ -364,10 +334,3 @@ function placePattern(pattern, offsetX, offsetY) {
 }
 
 window.onresize = reportWindowSize;
-
-
-
-
-
-     // Stasis
-  //     nextBoard[x][y] = currentBoard[x][y];

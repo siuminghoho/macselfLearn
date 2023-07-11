@@ -3,7 +3,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 50vh;
 }
 
 .landing-page {
@@ -17,3 +17,27 @@
     justify-content: space-between;
 }
 
+.title{
+    font-family: fantasy
+}
+
+
+.start-game {
+    font-family: 'Courier New', Courier, monospace;
+    
+    display: block;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    width:200px
+}
+.smile-face{
+    font-size: 20px;
+    color: yellow;
+}
+
+.paragraph {
+    width: 70%; /* Adjust this value to set the desired width for the paragraphs */
+    margin: 0 auto;
+    text-align: justify;
+}
