@@ -6,6 +6,8 @@ let rows; /* To be determined by window height */
 let currentBoard;
 let nextBoard;
 
+
+
 //extra variables
 let fr = 5;
 // let MIN_ALIVE_NEIGHBORS = 2;
@@ -15,9 +17,14 @@ let isGameRunning = false;
 let selectedPattern;
 let cursorX = 0;
 let cursorY = 0;
+let isDrawingEnabled = false;
+let clickedField;
+const colorBlindToggle = document.getElementById('colorBlindToggle')
 
 const heightOutput = document.querySelector("#height");
 const widthOutput = document.querySelector("#width");
+
+
 
 
 function setup() {
@@ -26,7 +33,7 @@ function setup() {
   frameRate(fr);
 
   /* Set the canvas to be under the element #canvas*/
-  const canvas = createCanvas(1200, windowHeight - 400);
+  const canvas = createCanvas(windowWidth, windowHeight - 400);
   canvas.parent(document.querySelector("#canvas"));
 
   /*Calculate the number of columns and rows */
@@ -77,6 +84,9 @@ function init(event, minAlive, maxAlive, reproduction) {
 function draw() {
   background(255);
   generate();
+
+  const isColorBlindMode = colorBlindToggle.checked
+
   for (let i = 0; i < columns; i++) {
     for (let j = 0; j < rows; j++) {
 
@@ -93,11 +103,13 @@ function draw() {
       }
       if (currentBoard[i][j] == 1) {
         if (neighbors == 3) {
-          fill(100); // Color for cells that came to life due to having exactly 3 neighbors
+          isColorBlindMode ? fill(0, 100, 150) : fill(100); // Color for cells that came to life due to having exactly 3 neighbors
         } else if (neighbors == 2) {
-          fill(150); // Color for cells that are alive and have exactly 2 neighbors (they stay alive)
+          isColorBlindMode ? fill(0, 150, 200) : fill(150); // Color for cells that are alive and have exactly 2 neighbors (they stay alive)
         } else {
-          let boxColor = `rgb(${Math.floor(Math.random() * 255)},${Math.floor(Math.random() * 255)},${Math.floor(Math.random() * 255)})`;
+          let boxColor = isColorBlindMode
+            ? `rgb(${Math.floor(Math.random() * 150)},${Math.floor(Math.random() * 200)},${Math.floor(Math.random() * 255)})`
+            : `rgb(${Math.floor(Math.random() * 255)},${Math.floor(Math.random() * 255)},${Math.floor(Math.random() * 255)})`;
           fill(boxColor); // Alive color (replace 'boxColor' with the variable or value you're using)
         }
       } else {
@@ -111,13 +123,62 @@ function draw() {
 
     }
   }
-
+  if (isDrawingEnabled) {
+    handleDrawingInput();
+ 
+  }
   // Draw the cursor
   stroke('yellow');
-  strokeWeight(3);
+  strokeWeight(1);
   noFill();
   rect(cursorX * unitLength, cursorY * unitLength, unitLength, unitLength);
 }
+
+
+function handleDrawingInput(){
+  if (keyCode === 38) {
+
+    cursorY = (cursorY - 1 + rows) % rows;
+    currentBoard[x][y] = 1
+    // value = 'yellow'
+    console.log(38)
+  } else if (keyCode === 40) {
+
+    cursorY = (cursorY + 1 + rows) % rows;
+    currentBoard[x][y] = 1
+    // value = 'yellow'
+    console.log(40)
+  } else if (keyCode === 37) {
+
+    cursorX = (cursorX - 1 + columns) % columns;
+    currentBoard[x][y] = 1
+    // value = 'yellow'
+    console.log(37)
+  } else if (keyCode === 39) {
+
+    cursorX = (cursorX + 1 + columns) % columns;
+    currentBoard[x][y] = 1
+    // value = 'yellow'
+    console.log(39)
+  }
+}
+
+
+// function keyPressed() {
+//   if (keyCode === ENTER) {
+//     isGameRunning = !isGameRunning;
+
+//     if (isGameRunning) {
+//       console.log('going');
+//       loop();
+//     } else {
+//       console.log('stopping');
+//       noLoop();
+//     }
+//   }
+// }
+
+
 
 
 function applyRules(currentBoard, x, y, minAliveNeighbors, maxAliveNeighbors, reproductionNeighbors) {
@@ -182,6 +243,13 @@ function mouseDragged() {
 }
 
 //When mouse is pressed
+
+function mouseClicked() {
+  clickedField = getFieldFromCoordinates(mouseX, mouseY);
+  if (clickedField !== null) {
+    isDrawingEnabled = true;
+  }
+}
 
 function mousePressed() {
   console.log("mouse pressed");
@@ -270,6 +338,7 @@ document.getElementById('gosperGliderGun').addEventListener('click', (event) => 
 
 
 
+
 // Initialize cursor position
 // let cursorX = Math.floor(columns / 2);
 // let cursorY = Math.floor(rows / 2);
@@ -278,32 +347,32 @@ document.getElementById('gosperGliderGun').addEventListener('click', (event) => 
 
 function keyPressed() {
 
-  if (keyCode == 38) {
+  // if (keyCode === 38) {
 
-    cursorY = (cursorY - 1 + rows) % rows;
-    currentBoard[x][y] = 1
-    value = 'yellow'
-    console.log(38)
-  } else if (keyCode == 40) {
+  //   cursorY = (cursorY - 1 + rows) % rows;
+  //   currentBoard[x][y] = 1
+  //   // value = 'yellow'
+  //   console.log(38)
+  // } else if (keyCode === 40) {
 
-    cursorY = (cursorY + 1 + rows) % rows;
-    currentBoard[x][y] = 1
-    value = 'yellow'
-    console.log(40)
-  } else if (keyCode === 37) {
+  //   cursorY = (cursorY + 1 + rows) % rows;
+  //   currentBoard[x][y] = 1
+  //   // value = 'yellow'
+  //   console.log(40)
+  // } else if (keyCode === 37) {
 
-    cursorX = (cursorX - 1 + columns) % columns;
-    currentBoard[x][y] = 1
-    value = 'yellow'
-    console.log(37)
-  } else if (keyCode === 39) {
+  //   cursorX = (cursorX - 1 + columns) % columns;
+  //   currentBoard[x][y] = 1
+  //   // value = 'yellow'
+  //   console.log(37)
+  // } else if (keyCode === 39) {
 
-    cursorX = (cursorX + 1 + columns) % columns;
-    currentBoard[x][y] = 1
-    value = 'yellow'
-    console.log(39)
-  } else if (key === ' ') { // Enter space
-    // isGameRunning = !isGameRunning;
+  //   cursorX = (cursorX + 1 + columns) % columns;
+  //   currentBoard[x][y] = 1
+  //   // value = 'yellow'
+  //   console.log(39)
+  } if (keyCode === ENTER) { // Enter space
+     isGameRunning = !isGameRunning;
 
     if (isGameRunning) {
       console.log('going')
@@ -316,12 +385,35 @@ function keyPressed() {
     //   redraw();
     // }
   }
+// }
+
+// function reportWindowSize() {
+//   heightOutput.textContent = window.innerHeight;
+//   widthOutput.textContent = window.innerWidth;
+// }
+
+
+function getFieldFromCoordinates(x, y) {
+  const column = floor(x / unitLength);
+  const row = floor(y / unitLength);
+
+  // Check if the coordinates are within the valid range
+  if (column >= 0 && column < columns && row >= 0 && row < rows) {
+    return { column, row };
+  } else {
+    return null; // Coordinates outside the valid range
+  }
 }
 
-function reportWindowSize() {
-  heightOutput.textContent = window.innerHeight;
-  widthOutput.textContent = window.innerWidth;
+function mouseDoubleClicked() {
+  isDrawingEnabled = true;
 }
+
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+}
+
 
 // location.reload()
 

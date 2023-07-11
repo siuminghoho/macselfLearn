@@ -12,5 +12,5 @@ Here are some of the topics that you should attempt to work on:
 [x]-Well-known patterns of Game of Life to select from (Examples: Gosper Glider Gun, Glider, Lightweight train).
 []-Use Keyboard to control the cursor to place the life
 [X]-Resize board on windows resize (Check out windowsResized())
-[]-Switching between different styles.
+[X]-Switching between different styles.
 []-Anything else that you could think of.

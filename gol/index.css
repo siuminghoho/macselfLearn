@@ -1,5 +1,5 @@
 .container {
-    background-color: rgb(0, 157, 255);
+    background-color: rgba(0, 157, 255,0.9);
     display: grid;
     justify-content: center;
     align-items: center;
@@ -107,3 +107,44 @@
     }
 
 }
+
+
+@keyframes typing {
+    from {
+      width: 0;
+    }
+    to {
+      width: 100%;
+    }
+  }
+  
+  @keyframes blink {
+    50% {
+      border-color: transparent;
+    }
+  }
+  
+  @keyframes shiny {
+    0%, 100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+  
+  .typewriter {
+    font-family: "Press Start 2P", cursive;
+    font-size: 24px;
+    overflow: hidden;
+    display: inline-block;
+    width: 100%;
+    border-right: .15em solid;
+    white-space: nowrap;
+    animation: typing 4s steps(12, end), blink .5s step-end infinite;
+    background: linear-gradient(90deg, #F0E68C, #FF4500, #7FFF00, #6495ED, #EE82EE);
+    background-size: 300% 100%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shiny 5s ease-in-out infinite, typing 4s steps(12, end), blink .5s step-end infinite;
+  }
