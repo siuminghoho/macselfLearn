@@ -323,6 +323,8 @@ function reportWindowSize() {
   widthOutput.textContent = window.innerWidth;
 }
 
+// location.reload()
+
 function placePattern(pattern, offsetX, offsetY) {
   for (let i = 0; i < pattern.length; i++) {
     for (let j = 0; j < pattern[i].length; j++) {

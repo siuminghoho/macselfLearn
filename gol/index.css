@@ -1,43 +1,109 @@
 .container {
-    background-color: yellow;
-    display: flex;
+    background-color: rgb(0, 157, 255);
+    display: grid;
     justify-content: center;
     align-items: center;
-    height: 50vh;
+    height: 100vh;
+    border-radius: 10px;
 }
 
 .landing-page {
-    background-color: red;
+    /* background-color: red; */
     text-align: center;
+    /* width:auto; */
+    background: transparent url("image0.png") repeat local -10px -10px;
 }
 
 .grid-system {
-    background-color: green;
+    /* background-color: green; */
     display: flex;
     justify-content: space-between;
+    border-radius: 10px;
 }
 
-.title{
-    font-family: fantasy
+.title {
+    font-family: fantasy;
+    margin-top: 30px;
 }
 
 
 .start-game {
     font-family: 'Courier New', Courier, monospace;
-    
+    font-size: x-large;
     display: block;
     justify-content: center;
     align-items: center;
     margin: auto;
-    width:200px
+    width: 200px
 }
-.smile-face{
+
+.smile-face {
     font-size: 20px;
-    color: yellow;
+    /* color: yellow; */
 }
 
 .paragraph {
-    width: 70%; /* Adjust this value to set the desired width for the paragraphs */
+    width: 80%;
+    /* Adjust this value to set the desired width for the paragraphs */
     margin: 0 auto;
     text-align: justify;
+    font-size: x-large;
+}
+
+
+
+/* @media only screen and (max-width: 500px) {
+    body {
+      background-color: lightblue;
+    }
+  } */
+
+@media only screen and (max-width: 520px) {
+    .title {
+
+        margin-top: 40px;
+    }
+}
+
+@media only screen and (max-width: 1200px) {
+    .paragraph {
+
+        font-size: large;
+    }
+}
+
+@media only screen and (max-width: 1200px) {
+    .paragraph {
+
+        font-size: medium;
+    }
+}
+
+
+
+@media only screen and (max-width: 375px) {
+    .paragraph {
+
+        font-size: 3px;
+    }
+
+    .title {
+        margin-top: 10px;
+    }
+
+}
+
+
+@media only screen and (max-width: 375px) {
+    .title {
+        margin-top: 10px;
+    }
+
+}
+
+@media only screen and (max-width: 800px) {
+    .start-game {
+        font-size: xx-small;
+    }
+
 }
