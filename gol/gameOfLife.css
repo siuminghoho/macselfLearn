@@ -1,103 +1,153 @@
-.background {
+.extras {}
+
+.flow-controls {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin: 5px;
+}
+
+
+@media screen and (max-width: 576px) {
+  .rules {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
-    /* height: 100vh; */
   }
-  
+
+  .row-custom {}
+
+}
+
+.row-custom {
+
+  --bs-gutter-x: 1.5rem;
+  --bs-gutter-y: 0;
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: calc(-1 * var(--bs-gutter-y));
+  margin-right: calc(-.5 * var(--bs-gutter-x));
+  margin-left: calc(-.5 * var(--bs-gutter-x));
+}
+
+
+
+.background {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* height: 100vh; */
+}
+
+.header {
+  margin-top: 20px;
+  font-size: 24px;
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.canvasContainer {
+  display: block;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* padding: 20px 10px; */
+  margin: 20px 0;
+  overflow: auto;
+}
+
+
+.defaultCanvas0 {
+  display: block;
+  margin: 0 auto;
+  border: 1px solid black;
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+}
+
+.controls label {
+  margin-bottom: 10px;
+}
+
+.form-range {
+  width: 100%;
+  max-width: 400px;
+}
+
+
+
+
+.customRulesForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+}
+
+.spaceships {
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* margin-bottom: 10px; */
+  /* Adjust the height if needed */
+}
+
+.spaceships button {
+  margin-bottom: 10px;
+  /* Adjust the margin as desired */
+}
+
+
+.toggle-description {
+  margin-left: 10px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+
+@media only screen and (max-width: 600px) {
+  body {
+    background-color: lightblue;
+  }
+}
+
+@media only screen and (max-width: 568px) {
   .header {
-    margin-top: 20px;
     font-size: 24px;
   }
-  
-  .controls {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 20px;
+}
+
+@media only screen and (max-width: 768px) {
+  .paragraph {
+    font-size: 12px;
   }
-  
-  .canvasContainer {
-    display: block;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 20px 10px;
-    margin: 20px 0;
-    overflow: auto;
-  }
-  
-  #canvasContainer1 {
-    margin-top: 10px;
-    margin-bottom: 10px;
-  }
-  
-
-  .controls {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-  }
-  
-  .controls label {
-    margin-bottom: 10px;
-  }
-  
-  .form-range {
-    width: 100%;
-    max-width: 400px;
-  }
+}
 
 
-
-  .button{
-    width:50px;
-    height:50px;
-
-
-  }
+.init {
+  width: 100px;
+  height: 100px;
 
 
-  .spaceships{
-    
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      /* margin-bottom: 10px; */
-       /* Adjust the height if needed */
-    }
+}
 
-    .spaceships button {
-      margin-bottom: 10px; /* Adjust the margin as desired */
-    }
-
-
-    .toggle-description {
-      margin-left: 10px;
-      font-size: 16px;
-      font-weight: bold;
-    }
-
-
-  @media only screen and (max-width: 500px) {
-    body {
-      background-color: lightblue;
-    }
-  }
-
-  @media only screen and (max-width: 568px) {
-    .header {
-      font-size: 24px;
-    }
-  }
-  
-  @media only screen and (max-width: 768px) {
-    .paragraph {
-      font-size: 12px;
-    }
-  }
-  
+.btn{
+  width: 100px;
+  height: 100px;
+  margin: 5px;
+}

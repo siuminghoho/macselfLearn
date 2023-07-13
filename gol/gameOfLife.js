@@ -26,14 +26,11 @@ const widthOutput = document.querySelector("#width");
 
 
 
-
 function setup() {
-
-
   frameRate(fr);
 
   /* Set the canvas to be under the element #canvas*/
-  const canvas = createCanvas(windowWidth, windowHeight - 400);
+  const canvas = createCanvas(windowWidth * .8, windowHeight * .4);
   canvas.parent(document.querySelector("#canvas"));
 
   /*Calculate the number of columns and rows */
@@ -53,37 +50,74 @@ function setup() {
 
 
 
-function init(event, minAlive, maxAlive, reproduction) {
-  if (event) {
-    event.preventDefault();
-  }
-
-  //Check if values are provided, and if not, use default values.
-  // minAliveNeighbors = minAlive ? parseInt(minAlive) : MIN_ALIVE_NEIGHBORS;
-  // maxAliveNeighbors = maxAlive ? parseInt(maxAlive) : MAX_ALIVE_NEIGHBORS;
-  // reproductionNeighbors = reproduction ? parseInt(reproduction) : REPRODUCTION_NEIGHBORS;
+function init(randomize = true) {
 
   // Initialize the board with random values.
   for (let i = 0; i < columns; i++) {
     for (let j = 0; j < rows; j++) {
       currentBoard[i][j] = 0;
       nextBoard[i][j] = 0;
-      currentBoard[i][j] = random() > 0.8 ? 1 : 0; // one line if
+      if (randomize) {
+        currentBoard[i][j] = random() > 0.8 ? 1 : 0; // one line if
+      } else {
+        currentBoard[i][j] = 0;
+      }
       nextBoard[i][j] = 0;
       // board[i][j] = floor(random(2));
       // next[i][j] = 0;
     }
   }
-  // MIN_ALIVE_NEIGHBORS = parseInt(minAliveNeighbors);
-  // MAX_ALIVE_NEIGHBORS = parseInt(maxAliveNeighbors);
-  // REPRODUCTION_NEIGHBORS = parseInt(reproductionNeighbors);
+
+  loop()
+  isGameRunning = true;
+  flag.innerHTML = isGameRunning
+
 }
 
 
 
+function cursorPreview() {
+
+
+  const x = Math.floor(mouseX / unitLength);
+  const y = Math.floor(mouseY / unitLength);
+  cursorX = x;
+  cursorY = y;
+  console.log("previewing")
+  if (!isGameRunning) { draw() }
+
+  stroke('red');
+  strokeWeight(5);
+  noFill();
+  rect(x * unitLength, y * unitLength, unitLength, unitLength);
+}
+
+
+function mouseMoved() {
+  if (mouseX > unitLength * columns || mouseY > unitLength * rows || mouseX < 0 || mouseY < 0) {
+    return;
+  }
+
+  if (selectedPattern) {
+    const x = Math.floor(mouseX / unitLength);
+    const y = Math.floor(mouseY / unitLength);
+    cursorX = x;
+    cursorY = y;
+    previewPattern(selectedPattern,cursorX,cursorY)
+  } else {
+    cursorPreview()
+  }
+
+}
+// for debugging use
+let flag = document.querySelector("#flag-running")
+
 function draw() {
+
   background(255);
-  generate();
+  if (isGameRunning) {
+    generate();
+  }
 
   const isColorBlindMode = colorBlindToggle.checked
 
@@ -117,65 +151,20 @@ function draw() {
       }
 
       stroke(strokeColor);
+      strokeWeight(1);
       rect(i * unitLength, j * unitLength, unitLength, unitLength);
-
-
 
     }
   }
-  if (isDrawingEnabled) {
-    handleDrawingInput();
- 
-  }
-  // Draw the cursor
-  stroke('yellow');
-  strokeWeight(1);
-  noFill();
-  rect(cursorX * unitLength, cursorY * unitLength, unitLength, unitLength);
+  // if (isDrawingEnabled) {
+  //   handleKeyboardInput();
+  // }
+
 }
 
 
-function handleDrawingInput(){
-  if (keyCode === 38) {
+// function handleKeyboardInput() {
 
-    cursorY = (cursorY - 1 + rows) % rows;
-    currentBoard[x][y] = 1
-    // value = 'yellow'
-    console.log(38)
-  } else if (keyCode === 40) {
-
-    cursorY = (cursorY + 1 + rows) % rows;
-    currentBoard[x][y] = 1
-    // value = 'yellow'
-    console.log(40)
-  } else if (keyCode === 37) {
-
-    cursorX = (cursorX - 1 + columns) % columns;
-    currentBoard[x][y] = 1
-    // value = 'yellow'
-    console.log(37)
-  } else if (keyCode === 39) {
-
-    cursorX = (cursorX + 1 + columns) % columns;
-    currentBoard[x][y] = 1
-    // value = 'yellow'
-    console.log(39)
-  }
-}
-
-
-// function keyPressed() {
-//   if (keyCode === ENTER) {
-//     isGameRunning = !isGameRunning;
-
-//     if (isGameRunning) {
-//       console.log('going');
-//       loop();
-//     } else {
-//       console.log('stopping');
-//       noLoop();
-//     }
-//   }
 // }
 
 
@@ -238,6 +227,7 @@ function mouseDragged() {
     currentBoard[x][y] = 1;
     fill('gold');
     stroke(strokeColor);
+    strokeWeight(1)
     rect(x * unitLength, y * unitLength, unitLength, unitLength);
   }
 }
@@ -252,8 +242,13 @@ function mouseClicked() {
 }
 
 function mousePressed() {
+  if (mouseX > unitLength * columns || mouseY > unitLength * rows || mouseX < 0 || mouseY < 0) {
+    return;
+  }
   console.log("mouse pressed");
-  noLoop();
+  // noLoop();
+  isGameRunning = false;
+  flag.innerHTML = isGameRunning
   mouseDragged();
 }
 
@@ -261,8 +256,13 @@ function mousePressed() {
 //When mouse is released
 
 function mouseReleased() {
+  if (mouseX > unitLength * columns || mouseY > unitLength * rows || mouseX < 0 || mouseY < 0) {
+    return;
+  }
   console.log("mouse released");
   loop();
+  isGameRunning = true;
+  flag.innerHTML = isGameRunning
 }
 
 function handleSpeedChange() {
@@ -281,6 +281,7 @@ stopButton.addEventListener("click", () => {
   noLoop();
   //change game running status
   isGameRunning = false;
+  flag.innerHTML = isGameRunning
 
 });
 
@@ -290,39 +291,49 @@ resumeButton.addEventListener("click", () => {
   loop();
   //change game running status
   isGameRunning = true;
+  flag.innerHTML = isGameRunning
+});
+
+const clearButton = document.querySelector("#clearButton");
+clearButton.addEventListener("click", () => {
+  // loop();
+
+
+  init(randomize = false);
+
+  noLoop();
+  isGameRunning = false;
+  flag.innerHTML = isGameRunning
 });
 
 
 
 
-const GLIDER = [
-  [0, 1, 0],
-  [0, 0, 1],
-  [1, 1, 1]
-];
+const GLIDER = `.O
+..O
+OOO`
 
-const LWSS = [
-  [0, 1, 1, 1, 1],
-  [1, 0, 0, 0, 1],
-  [0, 0, 0, 0, 1],
-  [1, 0, 0, 1, 0]
-];
-
-const GOSPER_GLIDER_GUN = [
-  [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-];
+const LWSS = `.O..O
+O
+O...O
+OOOO`;
 
 
 
+const GOSPER_GLIDER_GUN = `........................O
+......................O.O
+............OO......OO............OO
+...........O...O....OO............OO
+OO........O.....O...OO
+OO........O...O.OO....O.O
+..........O.....O.......O
+...........O...O
+............OO`;
 
 
 document.getElementById('glider').addEventListener('click', (event) => {
   event.preventDefault();
+  console.log('glider')
   selectedPattern = GLIDER;
 });
 
@@ -346,33 +357,9 @@ document.getElementById('gosperGliderGun').addEventListener('click', (event) => 
 // Event listener for keyboard input use p5 keyPressed
 
 function keyPressed() {
-
-  // if (keyCode === 38) {
-
-  //   cursorY = (cursorY - 1 + rows) % rows;
-  //   currentBoard[x][y] = 1
-  //   // value = 'yellow'
-  //   console.log(38)
-  // } else if (keyCode === 40) {
-
-  //   cursorY = (cursorY + 1 + rows) % rows;
-  //   currentBoard[x][y] = 1
-  //   // value = 'yellow'
-  //   console.log(40)
-  // } else if (keyCode === 37) {
-
-  //   cursorX = (cursorX - 1 + columns) % columns;
-  //   currentBoard[x][y] = 1
-  //   // value = 'yellow'
-  //   console.log(37)
-  // } else if (keyCode === 39) {
-
-  //   cursorX = (cursorX + 1 + columns) % columns;
-  //   currentBoard[x][y] = 1
-  //   // value = 'yellow'
-  //   console.log(39)
-  } if (keyCode === ENTER) { // Enter space
-     isGameRunning = !isGameRunning;
+  if (keyCode === ENTER) { // Enter space
+    isGameRunning = !isGameRunning;
+    flag.innerHTML = isGameRunning
 
     if (isGameRunning) {
       console.log('going')
@@ -381,11 +368,51 @@ function keyPressed() {
       console.log('stopping')
       noLoop();
     }
-    // if (!isGameRunning) {
-    //   redraw();
-    // }
   }
-// }
+  if (keyCode === 38) {
+
+    cursorY = (cursorY - 1 + rows) % rows;
+    // currentBoard[x][y] = 1
+    // value = 'yellow'
+    console.log("up")
+  } else if (keyCode === 40) {
+
+    cursorY = (cursorY + 1 + rows) % rows;
+    // currentBoard[x][y] = 1
+    // value = 'yellow'
+    console.log("down")
+  } else if (keyCode === 37) {
+
+    cursorX = (cursorX - 1 + columns) % columns;
+    // currentBoard[x][y] = 1
+    // value = 'yellow'
+    console.log("left")
+  } else if (keyCode === 39) {
+
+    cursorX = (cursorX + 1 + columns) % columns;
+    // currentBoard[x][y] = 1
+    // value = 'yellow'
+    console.log("right")
+  }
+  if (keyCode === 73) {
+    currentBoard[cursorX][cursorY] = 1
+    stroke('yellow');
+    strokeWeight(1);
+    fill('yellow')
+    rect(cursorX * unitLength, cursorY * unitLength, unitLength, unitLength);
+  }
+
+
+  if (!isGameRunning) { draw() }
+
+  stroke('red');
+  strokeWeight(5);
+  noFill();
+  rect(cursorX * unitLength, cursorY * unitLength, unitLength, unitLength);
+
+
+}
+
 
 // function reportWindowSize() {
 //   heightOutput.textContent = window.innerHeight;
@@ -411,20 +438,74 @@ function mouseDoubleClicked() {
 
 
 function windowResized() {
-  resizeCanvas(windowWidth, windowHeight);
+  // resizeCanvas(windowWidth, windowHeight);
+  setup();
 }
 
 
 // location.reload()
 
 function placePattern(pattern, offsetX, offsetY) {
-  for (let i = 0; i < pattern.length; i++) {
-    for (let j = 0; j < pattern[i].length; j++) {
-      if (i + offsetX < columns && j + offsetY < rows) {
-        currentBoard[i + offsetX][j + offsetY] = pattern[i][j];
+  console.log('placing pattern', pattern)
+  const processed = pattern.split("\n")
+
+  let startX = offsetX;
+  let startY = offsetY;
+  //number of col
+  let x = 0
+  //number of row
+  let y = 0
+  for (let instruction of processed) {
+    x = 0
+    for (let signal of instruction) {
+      if (signal == 'O') {
+        // console.log("insert 1!", `${x + startX}|${y + startY}`)
+
+        currentBoard[(x + startX + columns) % columns][(y + startY + rows) % rows] = 1
       }
+
+      x++
     }
+    y++
   }
 }
 
-window.onresize = reportWindowSize;
+
+function previewPattern(pattern, offsetX, offsetY) {
+  console.log('previewing pattern', pattern)
+  const processed = pattern.split("\n")
+
+  let startX = offsetX;
+  let startY = offsetY;
+  //number of col
+  let x = 0
+  //number of row
+  let y = 0
+  if (!isGameRunning) { draw() }
+  for (let instruction of processed) {
+    x = 0
+    for (let signal of instruction) {
+      if (signal == 'O') {
+        // console.log("insert 1!", `${x + startX}|${y + startY}`)console.log("previewing")
+        console.log("place preview")
+        stroke('red');
+        strokeWeight(5);
+        noFill();
+        rect(((x + startX + columns) % columns) * unitLength, ((y + startY + rows) % rows) * unitLength, unitLength, unitLength);
+
+      }
+
+      x++
+    }
+    y++
+  }
+}
+
+
+
+
+
+// <-------------------------------------------------------------------->
+
+
+

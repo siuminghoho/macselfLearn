@@ -26,57 +26,70 @@
 </head>
 
 <body>
-    <div class="background">
-        <div class="header">
-            <h1>Game Of Life</h1>
-        </div>
-        <!-- slider -->
-        <div class="controls"></div>
-        <label for="framerateSlider" class="form-label">Adjust Speed:</label>
-        <input type="range" class="form-range" id="framerateSlider" min="0" max="60" step="1" value="5"
-            oninput="handleSpeedChange()">
+    <div class="container">
+        <div class="background">
+            <div class="header">
+                <h1>Game Of Life</h1>
+                <p style="color: red;" id="flag-running"></p>
+            </div>
+            <!-- slider -->
+            <!-- <div class="controls"></div> -->
+            <label for="framerateSlider" class="form-label">Adjust Speed:</label>
+            <input type="range" class="form-range" id="framerateSlider" min="0" max="60" step="1" value="5"
+                oninput="handleSpeedChange()">
 
-        <div class="canvasContainer" id="canvas"></div>
+            <div class="canvasContainer" id="canvas"></div>
 
-    </div>
-    <form id="customRulesForm">
-        <label for="minAliveNeighbors">Minimum alive neighbors:</label>
-        <input type="number" id="minAliveNeighbors" name="minAliveNeighbors" value="2">
-        <label for="maxAliveNeighbors">Maximum alive neighbors:</label>
-        <input type="number" id="maxAliveNeighbors" name="maxAliveNeighbors" value="3">
-        <label for="reproductionNeighbors">Reproduction neighbors:</label>
-        <input type="number" id="reproductionNeighbors" name="reproductionNeighbors" value="3">
-
-
-
-        <button type="button" class="init"
-            onclick="init(event, minAliveNeighbors.value, maxAliveNeighbors.value, reproductionNeighbors.value)">Start</button>
-        <button type="button" class="stop" id="stopButton">Stop</button>
-        <button type="button" class="resume" id="resumeButton">Resume</button>
-
-
-        <div class="spaceships">
-            <button type="button" class="glider" id="glider">Spawn Glider</button>
-            <button type="button" class="lwss" id="lwss">Spawn LWSS</button>
-            <button type="button" class="gosperGliderGun" id="gosperGliderGun">Spawn Gosper Glider Gun</button>
         </div>
 
+        <div class="extras">
+
+            <div class="row-custom rules">
+                <div class="col-sm-4">
+                    <label for="minAliveNeighbors">Minimum alive neighbors:</label>
+                    <input type="number" id="minAliveNeighbors" name="minAliveNeighbors" value="2">
+                </div>
+                <div class="col-sm-4">
+                    <label for="maxAliveNeighbors">Maximum alive neighbors:</label>
+                    <input type="number" id="maxAliveNeighbors" name="maxAliveNeighbors" value="3">
+                </div>
+                <div class="col-sm-4">
+                    <label for="reproductionNeighbors">Reproduction neighbors:</label>
+                    <input type="number" id="reproductionNeighbors" name="reproductionNeighbors" value="3">
+                </div>
+            </div>
+
+
+            <div class="flow-controls">
+                <button type="button" class="btn btn-primary"
+                    onclick="init()">Default with randomize</button>
+                <button type="button" class="btn btn-danger" id="stopButton">Stop</button>
+                <button type="button" class="btn btn-success" id="resumeButton">Resume</button>
+                <button type="button" class="btn btn-warning" id="clearButton">Clear</button>
+            </div>
+
+            <div class="spaceships">
+                <button type="button" class="glider" id="glider">Spawn Glider</button>
+                <button type="button" class="lwss" id="lwss">Spawn LWSS</button>
+                <button type="button" class="gosperGliderGun" id="gosperGliderGun">Spawn Gosper Glider Gun</button>
+            </div>
 
 
 
-        <div class="d-flex ai-center g8">
-            <label class="switch">
-              <input type="checkbox" id="colorBlindToggle" data-toggle="toggle">
-              <span class="slider round"></span>
-            </label>
-            <span class="toggle-description">Color Blind Mode</span>
+
+            <div class="d-flex ai-center g8">
+                <label class="switch">
+                    <input type="checkbox" id="colorBlindToggle" data-toggle="toggle">
+                    <span class="slider round"></span>
+                </label>
+                <span class="toggle-description">Color Blind Mode</span>
+
+            </div>
 
 
 
+        </div>
         <script src="gameOfLife.js"></script>
-
-
-
 
 </body>
 
