@@ -17,3 +17,6 @@ console.log(
     "player after defeat boss,the strength grow to",
     player.getStrength()
 )
+
+
+
