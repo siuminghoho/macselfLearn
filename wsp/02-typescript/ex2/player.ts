@@ -45,25 +45,48 @@ export class Amazon implements Player {
 
             console.log(
                 `Player ${this.name} attacks monster with primary ${this.primary.name} dealing damage of ${damage}
-                Monster has${monster.getHP()} HP left.`)
-
-
-
-
+                Monster has${monster.getHp()} HP left.`)
 
 
         }
 
 
+        else {
+            //Secondary attack
+            let damage = this.secondary.damage * (1 + (this.level + 1) / 10);
+            monster.injure(damage);
+
+            console.log(
+                `Player ${this.name} attack monster with secondary${this.secondary.name
+                } dealing damage of ${damage}
+             Monster has ${monster.getHp()} HP left.`
+            )
+        }
+
     }
 
 
-}
 
-switchAttack(){
-//TODO:Change the attack mode for this player
-this.usePrimaryAttack = !this.usePrimaryAttack;
-if(this.usePrimaryAttack){
-    console.log(`Player ${this.name} switches to primary attack ${this.primary.name}`);
 
+    switchAttack() {
+        //TODO:Change the attack mode for this player
+        this.usePrimaryAttack = !this.usePrimaryAttack;
+        if (this.usePrimaryAttack) {
+            console.log(`Player ${this.name} switches to primary attack ${this.primary.name}`);
+
+        }
+    }
+
+    gainExperience(exp: number) {
+        this.experience += exp;
+
+        if (this.experience > levelUpRequirement[this.level]) {
+            this.experience = this.experience - levelUpRequirement[this.level];
+            this.level += 1;
+            console.log(
+                `Player ${this.name}  level up!!! From lv${this.level - 1} to lv${this.level}} with ${this.experience} exp left. The next level requirement is ${levelUpRequirement[this.level]
+                }`
+            )
+        }
+    }
 }
