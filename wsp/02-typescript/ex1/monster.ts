@@ -12,14 +12,13 @@ export class Monster {
 
         if (this.hp < 0) {
             this.hp = 0;
-
+            return
         }
-
+       
     }
+
     getHp(){
         return this.hp;
     }
-
-    // Think of how to write injure
 
 }
