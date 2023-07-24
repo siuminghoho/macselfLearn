@@ -1,41 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Wall</title>
-    <link rel="stylesheet" href="./css/index.css" />
-  </head>
-  <body>
-    <div class="container">
-      <div class="portal">
-        <div class="text-memo" contenteditable="true"></div>
-        <form id="memo-form">
-          <input type="file" name="photo" id="photo" />
-          <input type="submit" value="提交" />
-        </form>
-        <div class="title">連儂管理員專用</div>
-        <form id="login-form">
-          <input
-            type="text"
-            name="username"
-            id="username"
-            placeholder="User Name"
-          />
-          <input
-            type="password"
-            name="password"
-            id="password"
-            placeholder="Password"
-          />
-          <input type="submit" value="提交" />
-        </form>
-        <a href="#">Google Login</a>
-      </div>
-      <div class="memos">
-        <div class="memo"></div>
-        <div class="memo"></div>
-      </div>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wall</title>
+  <link rel="stylesheet" href="./css/index.css" />
+</head>
+
+<body>
+  <div class="container">
+    <div class="portal">
+      <div class="text-memo" contenteditable="true"></div>
+      <form id="memo-form">
+        <input type="file" name="photo" id="photo" />
+        <input type="submit" value="提交" />
+      </form>
+      <div class="title">Pokemon</div>
+      <form id="login-form">
+        <input type="text" name="username" id="username" placeholder="User Name" />
+        <input type="password" name="password" id="password" placeholder="Password" />
+        <input type="submit" value="提交" />
+      </form>
+      <a href="#">Google Login</a>
     </div>
-  </body>
+    <div class="memos">
+      <div class="memo">
+
+        <form action="/memos" method="POST" id="contact-form">
+          <div>
+            <label for ="content">
+              Memo Content
+              <input
+                type="text"
+                name="firstName"
+                placeholder="i love hk?"
+                required
+              />
+            </label>
+          </div>
+          
+          <!-- <div>
+            <label>
+              Age:
+              <select name="age">
+                <option value="">--- Please Choose ---</option>
+                <option value="0-18">0-18</option>
+                <option value="19-29">19-29</option>
+                <option value="30-39">30-39</option>
+                <option value="40-49">40-49</option>
+                <option value="50-59">50-59</option>
+                <option value=">60">Above 60</option>
+              </select>
+            </label>
+          </div> -->
+          <div>
+            <label>
+              Description:
+              <textarea
+                name="description"
+                cols="20"
+                rows="10"
+                placeholder="Tell us about you"
+              ></textarea>
+            </label>
+          </div>
+          <div>
+            <input type="submit" value="Submit" />
+            <input type="reset" value="Clear" />
+          </div>
+        </form>
+
+
+
+
+
+
+
+
+
+
+      </div>
+      <div class="memo"></div>
+    </div>
+  </div>
+</body>
+
 </html>
